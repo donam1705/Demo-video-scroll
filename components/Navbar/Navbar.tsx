@@ -53,7 +53,28 @@ export default function Navbar() {
       </div>
 
       <ul className={styles.navItems}>
-        {navItems.map((item) => (
+        {navItems.slice(0, 2).map((item) => (
+          <li key={item.id}>
+            <button
+              className={`${styles.navItem} ${activeTab === item.id ? styles.active : ""
+                }`}
+              onClick={() => setActiveTab(item.id)}
+              id={`nav-${item.id}`}
+            >
+              <span className={styles.navIcon}>{item.icon}</span>
+              <span className={styles.navLabel}>{item.label}</span>
+            </button>
+          </li>
+        ))}
+
+        <li className={styles.createBtnWrapper}>
+          <button className={styles.createBtn} id="nav-create">
+            <span className={styles.createBtnIcon}>+</span>
+            <span className={styles.createBtnLabel}>Tạo video</span>
+          </button>
+        </li>
+
+        {navItems.slice(2).map((item) => (
           <li key={item.id}>
             <button
               className={`${styles.navItem} ${activeTab === item.id ? styles.active : ""
@@ -67,7 +88,8 @@ export default function Navbar() {
           </li>
         ))}
       </ul>
-      <button className={styles.createBtn} id="nav-create">
+
+      <button className={styles.createBtnDesktop} id="nav-create-desktop">
         <span className={styles.createBtnIcon}>+</span>
         <span className={styles.createBtnLabel}>Tạo video</span>
       </button>

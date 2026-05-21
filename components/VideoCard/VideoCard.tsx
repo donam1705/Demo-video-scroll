@@ -19,17 +19,24 @@ export default function VideoCard({ video, isActive }: VideoCardProps) {
   const [isLoading, setIsLoading] = useState(true);
   const playIconTimeout = useRef<NodeJS.Timeout | null>(null);
 
+  // Auto-play/pause based on active state (Intersection Observer triggers this)
   useEffect(() => {
     const videoEl = videoRef.current;
     if (!videoEl) return;
+
+    if (videoEl.readyState >= 2) {
+      setIsLoading(false);
+    }
 
     if (isActive) {
       const playPromise = videoEl.play();
       if (playPromise !== undefined) {
         playPromise
-          .then(() => setIsPlaying(true))
+          .then(() => {
+            setIsPlaying(true);
+            setIsLoading(false);
+          })
           .catch(() => {
-            // Autoplay blocked — user needs to interact
             setIsPlaying(false);
           });
       }
@@ -39,7 +46,15 @@ export default function VideoCard({ video, isActive }: VideoCardProps) {
     }
   }, [isActive]);
 
-  // Update progress bar
+  useEffect(() => {
+    const videoEl = videoRef.current;
+    if (!videoEl) return;
+
+    if (videoEl.readyState >= 2) {
+      setIsLoading(false);
+    }
+  }, []);
+
   useEffect(() => {
     const videoEl = videoRef.current;
     if (!videoEl) return;
@@ -84,68 +99,93 @@ export default function VideoCard({ video, isActive }: VideoCardProps) {
     setIsLoading(false);
   };
 
+  const handleCanPlay = () => {
+    setIsLoading(false);
+  };
+
+  const handlePlaying = () => {
+    setIsLoading(false);
+  };
+
+  const handleWaiting = () => {
+    setIsLoading(true);
+  };
+
   return (
     <div className={styles.videoCard} id={`video-card-${video.id}`}>
-      <div className={styles.videoContainer}>
-        {/* Video Element */}
-        <video
-          ref={videoRef}
-          className={styles.video}
-          src={video.videoUrl}
-          loop
-          muted
-          playsInline
-          preload="metadata"
-          onClick={handleVideoClick}
-          onLoadedData={handleLoadedData}
-          id={`video-player-${video.id}`}
-        />
+      <div className={styles.contentWrapper}>
+        <div className={styles.videoContainer}>
+          {/* Video Element */}
+          <video
+            ref={videoRef}
+            className={styles.video}
+            src={video.videoUrl}
+            loop
+            muted
+            playsInline
+            preload="metadata"
+            onClick={handleVideoClick}
+            onLoadedData={handleLoadedData}
+            onCanPlay={handleCanPlay}
+            onPlaying={handlePlaying}
+            onWaiting={handleWaiting}
+            id={`video-player-${video.id}`}
+          />
 
-        {/* Loading Spinner */}
-        {isLoading && (
-          <div className={styles.loadingOverlay}>
-            <div className={styles.spinner} />
-          </div>
-        )}
+          {/* Loading Spinner */}
+          {isLoading && (
+            <div className={styles.loadingOverlay}>
+              <div className={styles.spinner} />
+            </div>
+          )}
 
-        {/* Play Icon Overlay */}
-        {showPlayIcon && (
-          <div className={styles.playPauseOverlay}>
-            <div className={styles.playIcon}>
+          {/* Play Icon Overlay */}
+          {showPlayIcon && (
+            <div className={styles.playPauseOverlay}>
+              <div className={styles.playIcon}>
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </div>
+            </div>
+          )}
+
+          {/* Pause Icon Overlay */}
+          {showPauseIcon && (
+            <div className={styles.playPauseOverlay}>
+              <div className={styles.pauseIcon}>
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+                </svg>
+              </div>
+            </div>
+          )}
+
+          {/* Gradient Overlays */}
+          <div className={styles.topGradient} />
+          <div className={styles.gradientOverlay} />
+
+          {/* Video Info */}
+          <div className={styles.videoInfo}>
+            <div className={styles.authorName}>
+              {video.authorName}
+            </div>
+            <div className={styles.authorHandle}>{video.authorHandle}</div>
+            <p className={styles.description}>{video.description}</p>
+            <div className={styles.musicInfo}>
               <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M8 5v14l11-7z" />
+                <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" />
               </svg>
+              <span className={styles.musicText}>{video.musicName}</span>
             </div>
           </div>
-        )}
 
-        {/* Pause Icon Overlay */}
-        {showPauseIcon && (
-          <div className={styles.playPauseOverlay}>
-            <div className={styles.pauseIcon}>
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
-              </svg>
-            </div>
-          </div>
-        )}
-
-        {/* Gradient Overlays */}
-        <div className={styles.topGradient} />
-        <div className={styles.gradientOverlay} />
-
-        {/* Video Info */}
-        <div className={styles.videoInfo}>
-          <div className={styles.authorName}>
-            {video.authorName}
-          </div>
-          <div className={styles.authorHandle}>{video.authorHandle}</div>
-          <p className={styles.description}>{video.description}</p>
-          <div className={styles.musicInfo}>
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" />
-            </svg>
-            <span className={styles.musicText}>{video.musicName}</span>
+          {/* Progress Bar */}
+          <div className={styles.progressBar}>
+            <div
+              className={styles.progressFill}
+              style={{ width: `${progress}%` }}
+            />
           </div>
         </div>
 
@@ -154,17 +194,10 @@ export default function VideoCard({ video, isActive }: VideoCardProps) {
           authorName={video.authorName}
           likesCount={video.likesCount}
           commentsCount={video.commentsCount}
+          bookmarksCount={video.bookmarksCount}
           sharesCount={video.sharesCount}
           isPlaying={isPlaying}
         />
-
-        {/* Progress Bar */}
-        <div className={styles.progressBar}>
-          <div
-            className={styles.progressFill}
-            style={{ width: `${progress}%` }}
-          />
-        </div>
       </div>
     </div>
   );

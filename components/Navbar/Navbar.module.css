@@ -1,0 +1,268 @@
+.navbar {
+  display: none;
+  position: fixed;
+  z-index: 100;
+  background: var(--bg-primary);
+}
+
+@media (min-width: 768px) {
+  .navbar {
+    display: flex;
+    flex-direction: column;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: var(--sidebar-width);
+    padding: 20px 12px;
+    border-right: 1px solid var(--border-subtle);
+    animation: fadeIn 0.4s ease;
+  }
+}
+
+@media (max-width: 767px) {
+  .navbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: calc(var(--bottom-nav-height) + var(--safe-area-bottom));
+    padding-bottom: var(--safe-area-bottom);
+    border-top: 1px solid var(--border-subtle);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    background: rgba(0, 0, 0, 0.85);
+  }
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px;
+  margin-bottom: 32px;
+  text-decoration: none;
+}
+
+.logoIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--accent-gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 800;
+  color: white;
+  flex-shrink: 0;
+}
+
+.logoText {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+}
+
+@media (max-width: 767px) {
+  .logo {
+    display: none;
+  }
+}
+
+.navItems {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  list-style: none;
+}
+
+@media (max-width: 767px) {
+  .navItems {
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+    gap: 0;
+  }
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  color: var(--text-secondary);
+  text-decoration: none;
+  position: relative;
+  border: none;
+  background: none;
+  width: 100%;
+  font-family: var(--font-family);
+  font-size: 16px;
+}
+
+.navItem:hover {
+  background: var(--bg-glass-hover);
+  color: var(--text-primary);
+}
+
+.navItem.active {
+  color: var(--text-primary);
+  background: var(--bg-glass);
+}
+
+.navItem.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 24px;
+  background: var(--accent-pink);
+  border-radius: 0 3px 3px 0;
+}
+
+@media (max-width: 767px) {
+  .navItem {
+    flex-direction: column;
+    gap: 4px;
+    padding: 6px 12px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    font-size: 10px;
+  }
+
+  .navItem.active::before {
+    display: none;
+  }
+
+  .navItem.active::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 2px;
+    background: var(--accent-pink);
+    border-radius: 0 0 2px 2px;
+  }
+}
+
+.navIcon {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.navIcon svg {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+}
+
+.navLabel {
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+@media (max-width: 767px) {
+  .navLabel {
+    font-size: 10px;
+    font-weight: 600;
+  }
+}
+
+.createBtnWrapper {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .createBtnWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.createBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: 0;
+  border-radius: 8px;
+  border: none;
+  background: var(--accent-gradient);
+  color: white;
+  font-family: var(--font-family);
+  font-size: 0;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  width: 44px;
+  height: 30px;
+}
+
+.createBtn:hover {
+  opacity: 0.9;
+  transform: scale(1.05);
+}
+
+.createBtnDesktop {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .createBtnDesktop {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 8px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: none;
+    background: var(--accent-gradient);
+    color: white;
+    font-family: var(--font-family);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    width: 100%;
+  }
+
+  .createBtnDesktop:hover {
+    opacity: 0.9;
+    transform: scale(1.02);
+    box-shadow: var(--shadow-glow);
+  }
+
+  .createBtnWrapper {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .createBtnLabel {
+    display: none;
+  }
+}
+
+.createBtnIcon {
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1;
+}

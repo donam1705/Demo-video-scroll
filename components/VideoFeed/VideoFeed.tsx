@@ -9,7 +9,6 @@ export default function VideoFeed() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  // Intersection Observer to detect which video is in viewport
   const observerCallback = useCallback(
     (entries: IntersectionObserverEntry[]) => {
       entries.forEach((entry) => {

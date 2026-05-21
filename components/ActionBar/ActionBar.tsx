@@ -7,6 +7,7 @@ interface ActionBarProps {
   authorName: string;
   likesCount: number;
   commentsCount: number;
+  bookmarksCount: number;
   sharesCount: number;
   isPlaying: boolean;
 }
@@ -25,6 +26,7 @@ export default function ActionBar({
   authorName,
   likesCount,
   commentsCount,
+  bookmarksCount,
   sharesCount,
   isPlaying,
 }: ActionBarProps) {
@@ -64,11 +66,7 @@ export default function ActionBar({
           aria-label="Like"
         >
           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            {liked ? (
-              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-            ) : (
-              <path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z" />
-            )}
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
           </svg>
         </button>
         <span className={styles.actionCount}>{formatCount(currentLikes)}</span>
@@ -78,17 +76,27 @@ export default function ActionBar({
       <div className={styles.actionItem}>
         <button className={styles.actionButton} id="action-comment" aria-label="Comment">
           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2v10z" />
+            <path d="M12 2C6.48 2 2 5.92 2 10.75c0 2.76 1.55 5.2 4.02 6.78L5.5 22l4.98-2.58c.49.07 1 .11 1.52.11 5.52 0 10-3.92 10-8.75S17.52 2 12 2zM8 11.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm4 0a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm4 0a1.5 1.5 0 110-3 1.5 1.5 0 010 3z" />
           </svg>
         </button>
         <span className={styles.actionCount}>{formatCount(commentsCount)}</span>
+      </div>
+
+      {/* Bookmark */}
+      <div className={styles.actionItem}>
+        <button className={styles.actionButton} id="action-bookmark" aria-label="Bookmark">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z" />
+          </svg>
+        </button>
+        <span className={styles.actionCount}>{formatCount(bookmarksCount)}</span>
       </div>
 
       {/* Share */}
       <div className={styles.actionItem}>
         <button className={styles.actionButton} id="action-share" aria-label="Share">
           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z" />
+            <path d="M20 12l-8-8v5c-5 0-8.5 3.5-9 9 2.5-3 5.5-4.5 9-4.5v4.5l8-6z" />
           </svg>
         </button>
         <span className={styles.actionCount}>{formatCount(sharesCount)}</span>
